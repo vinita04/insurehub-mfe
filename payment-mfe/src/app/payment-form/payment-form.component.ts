@@ -255,6 +255,18 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
       const payments = this.storage.get<Payment[]>('insurance_payments') || [];
       payments.unshift(newPayment);
       this.storage.set('insurance_payments', payments);
+
+      if (this.selectedPolicy?.status === 'pending') {
+        const policies = this.storage.get<Policy[]>('insurance_policies') || [];
+        const updatedPolicies = policies.map(policy =>
+          policy.id === this.selectedPolicy!.id
+            ? { ...policy, status: 'active' as const }
+            : policy
+        );
+        this.storage.set('insurance_policies', updatedPolicies);
+        this.selectedPolicy = updatedPolicies.find(policy => policy.id === this.selectedPolicy!.id) || null;
+      }
+
       this.refreshPaymentState();
 
       // Emit payment completed event

@@ -168,6 +168,7 @@ export function seedMockData(): void {
     localStorage.setItem('insurance_payments', JSON.stringify(MOCK_PAYMENTS));
   }
   localStorage.setItem(MOCK_DATA_VERSION_KEY, MOCK_DATA_VERSION);
+  reconcilePolicyStatuses();
 }
 
 export function resetMockData(): void {
@@ -175,4 +176,23 @@ export function resetMockData(): void {
   localStorage.removeItem('insurance_payments');
   localStorage.removeItem(MOCK_DATA_VERSION_KEY);
   seedMockData();
+}
+
+function reconcilePolicyStatuses(): void {
+  const policies = JSON.parse(localStorage.getItem('insurance_policies') || '[]') as Policy[];
+  const payments = JSON.parse(localStorage.getItem('insurance_payments') || '[]') as Payment[];
+
+  const updatedPolicies = policies.map(policy => {
+    const hasSuccessfulPayment = payments.some(payment =>
+      payment.policyId === policy.id && payment.status === 'success'
+    );
+
+    if (policy.status === 'pending' && hasSuccessfulPayment) {
+      return { ...policy, status: 'active' as const };
+    }
+
+    return policy;
+  });
+
+  localStorage.setItem('insurance_policies', JSON.stringify(updatedPolicies));
 }
