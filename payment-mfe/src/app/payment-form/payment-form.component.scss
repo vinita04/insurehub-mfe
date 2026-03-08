@@ -39,6 +39,36 @@
     }
 }
 
+.due-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-md;
+    margin-bottom: $space-lg;
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.due-item {
+    @include card;
+    padding: $space-md $space-lg;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.due-number {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+}
+
+.due-label {
+    font-size: $font-size-xs;
+    color: $text-muted;
+}
+
 .form-layout {
     display: grid;
     grid-template-columns: 1fr 360px;
@@ -111,12 +141,53 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: $space-md;
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+    }
 }
 
 .method-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: $space-sm;
+
+    @media (max-width: 520px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.policy-state-banner {
+    display: flex;
+    gap: $space-sm;
+    align-items: flex-start;
+    margin-bottom: $space-lg;
+    padding: 12px $space-md;
+    border-radius: $radius-md;
+    background: rgba($info, 0.08);
+    border: 1px solid rgba($info, 0.16);
+    color: $info;
+
+    &.overdue {
+        background: rgba($warning, 0.12);
+        border-color: rgba($warning, 0.2);
+        color: $warning;
+    }
+
+    .material-icons-outlined {
+        font-size: 18px !important;
+    }
+
+    strong,
+    span {
+        display: block;
+    }
+
+    span {
+        font-size: $font-size-xs;
+        opacity: 0.88;
+        margin-top: 2px;
+    }
 }
 
 .method-btn {
@@ -194,6 +265,14 @@
     &:hover {
         box-shadow: $shadow-sm;
     }
+
+    @media (max-width: 900px) {
+        position: static;
+    }
+
+    @media (max-width: 640px) {
+        padding: $space-lg;
+    }
 }
 
 .summary-title {
@@ -208,6 +287,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 6px 0;
+    gap: $space-md;
 
     &.total {
         padding-top: $space-md;
@@ -234,6 +314,7 @@
     font-size: $font-size-sm;
     color: $text-primary;
     font-weight: $font-weight-medium;
+    text-align: right;
 }
 
 .summary-divider {
@@ -282,6 +363,10 @@
 
     &:hover {
         box-shadow: $shadow-lg;
+    }
+
+    @media (max-width: 640px) {
+        padding: $space-xl;
     }
 }
 

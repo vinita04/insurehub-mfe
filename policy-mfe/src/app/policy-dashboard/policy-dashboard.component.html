@@ -44,6 +44,16 @@
                 </div>
             </div>
 
+            <div class="payment-state" *ngIf="getPaymentState(policy.id) as paymentState"
+                [class.payable]="paymentState.isPayable"
+                [class.overdue]="paymentState.isOverdue">
+                <span class="material-icons-outlined">{{ paymentState.isOverdue ? 'warning' : paymentState.isPayable ? 'payments' : 'schedule' }}</span>
+                <div>
+                    <strong>{{ paymentState.reason }}</strong>
+                    <span>Next due: {{ paymentState.nextDueDate }}</span>
+                </div>
+            </div>
+
             <div class="card-footer">
                 <span class="view-link">
                     View Details

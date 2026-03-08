@@ -10,6 +10,11 @@
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: $space-xl;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        gap: $space-md;
+    }
 }
 
 .page-title {
@@ -37,6 +42,10 @@
     display: flex;
     gap: $space-md;
     margin-bottom: $space-xl;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+    }
 }
 
 .summary-item {
@@ -89,6 +98,11 @@
     gap: $space-lg;
     align-items: center;
     animation: slideUp 0.25s ease both;
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+        gap: $space-sm;
+    }
 }
 
 .tx-left {
@@ -132,6 +146,10 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+
+    @media (max-width: 640px) {
+        align-items: flex-start;
+    }
 }
 
 .tx-amount {

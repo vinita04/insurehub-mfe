@@ -19,6 +19,11 @@
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: $space-xl;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        gap: $space-md;
+    }
 }
 
 .policy-type-badge {
@@ -106,6 +111,12 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: $space-lg;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: $space-sm;
+    }
 }
 
 .section-title {
@@ -202,6 +213,7 @@
     @include button-primary;
     padding: 12px 24px;
     font-size: $font-size-sm;
+    width: 100%;
 
     .material-icons-outlined {
         font-size: 18px !important;

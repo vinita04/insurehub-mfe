@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Policy, PolicyType, POLICY_TYPE_LABELS, STATUS_COLORS } from '../shared/models/policy.model';
 import { StorageService } from '../shared/services/storage.service';
+import { Payment } from '../shared/models/payment.model';
+import { PolicyPaymentState, getPolicyPaymentState } from '../shared/utils/payment-due';
 
 const POLICY_MATERIAL_ICONS: Record<PolicyType, string> = {
   health: 'local_hospital',
@@ -22,6 +24,7 @@ const POLICY_MATERIAL_ICONS: Record<PolicyType, string> = {
 export class PolicyDashboardComponent implements OnInit {
   policies: Policy[] = [];
   filteredPolicies: Policy[] = [];
+  paymentStates: Record<string, PolicyPaymentState> = {};
   activeFilter: string = 'all';
 
   readonly POLICY_TYPE_LABELS = POLICY_TYPE_LABELS;
@@ -40,7 +43,12 @@ export class PolicyDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const payments = this.storage.get<Payment[]>('insurance_payments') || [];
     this.policies = this.storage.get<Policy[]>('insurance_policies') || [];
+    this.paymentStates = this.policies.reduce<Record<string, PolicyPaymentState>>((acc, policy) => {
+      acc[policy.id] = getPolicyPaymentState(policy, payments);
+      return acc;
+    }, {});
     this.applyFilter('all');
   }
 
@@ -57,5 +65,9 @@ export class PolicyDashboardComponent implements OnInit {
 
   getTypeIcon(type: PolicyType): string {
     return POLICY_MATERIAL_ICONS[type] || 'description';
+  }
+
+  getPaymentState(policyId: string): PolicyPaymentState | null {
+    return this.paymentStates[policyId] || null;
   }
 }

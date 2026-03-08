@@ -37,6 +37,28 @@
                 <span class="stat-label">Total Paid</span>
             </div>
         </div>
+        <div class="stat-card">
+            <div class="stat-icon warning">
+                <span class="material-icons-outlined">priority_high</span>
+            </div>
+            <div class="stat-content">
+                <span class="stat-value">{{ stats.duePolicies }}</span>
+                <span class="stat-label">Premiums Due</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" *ngIf="duePolicies.length">
+        <h3 class="section-title">Needs Attention</h3>
+        <div class="due-list">
+            <a routerLink="/payments" class="due-card" *ngFor="let item of duePolicies">
+                <div>
+                    <span class="due-policy">{{ item.policy.policyNumber }}</span>
+                    <span class="due-meta">{{ item.reason }}</span>
+                </div>
+                <span class="due-date">{{ item.nextDueDate }}</span>
+            </a>
+        </div>
     </div>
 
     <!-- Quick Actions -->
@@ -59,7 +81,7 @@
                 </div>
                 <div class="action-text">
                     <span class="action-label">Make Payment</span>
-                    <span class="action-desc">Pay your premium</span>
+                    <span class="action-desc">Pay due or pending premiums</span>
                 </div>
                 <span class="material-icons-outlined action-arrow">arrow_forward</span>
             </a>

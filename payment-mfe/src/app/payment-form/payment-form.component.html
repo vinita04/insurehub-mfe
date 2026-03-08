@@ -21,7 +21,18 @@
     <div class="form-content" *ngIf="!paymentSuccess">
         <div class="page-header">
             <h1 class="page-title">Pay Premium</h1>
-            <p class="page-subtitle">Make a secure premium payment for your insurance policy</p>
+            <p class="page-subtitle">Pay only the premiums that are currently due or pending activation</p>
+        </div>
+
+        <div class="due-strip">
+            <div class="due-item">
+                <span class="due-number">{{ dueSummary.dueCount }}</span>
+                <span class="due-label">Policies due now</span>
+            </div>
+            <div class="due-item">
+                <span class="due-number">₹{{ dueSummary.dueAmount | number:'1.0-0' }}</span>
+                <span class="due-label">Total amount due</span>
+            </div>
         </div>
 
         <!-- Cross-MFE data indicator -->
@@ -38,11 +49,21 @@
                 <div class="form-group">
                     <label class="form-label">Select Policy</label>
                     <select class="form-select" [(ngModel)]="selectedPolicyId" (ngModelChange)="onPolicyChange()">
-                        <option value="" disabled>Choose a policy...</option>
-                        <option *ngFor="let p of policies" [value]="p.id">
-                            {{ p.policyNumber }} — {{ p.type | titlecase }} (₹{{ p.premiumAmount }})
+                        <option value="" disabled>{{ payablePolicies.length ? 'Choose a due policy...' : 'No payable policies available' }}</option>
+                        <option *ngFor="let p of payablePolicies" [value]="p.id">
+                            {{ p.policyNumber }} — {{ p.type | titlecase }} (₹{{ p.premiumAmount }}) • {{ getPolicyState(p.id)?.nextDueDate }}
                         </option>
                     </select>
+                    <span class="field-error" *ngIf="errors['policy']">{{ errors['policy'] }}</span>
+                </div>
+
+                <div class="policy-state-banner" *ngIf="selectedPolicy && getPolicyState(selectedPolicy.id) as paymentState"
+                    [class.overdue]="paymentState.isOverdue">
+                    <span class="material-icons-outlined">{{ paymentState.isOverdue ? 'priority_high' : 'event_available' }}</span>
+                    <div>
+                        <strong>{{ paymentState.reason }}</strong>
+                        <span>Next due date: {{ paymentState.nextDueDate }}</span>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -120,6 +141,10 @@
                 <div class="summary-row">
                     <span class="sum-label">Holder</span>
                     <span class="sum-value">{{ selectedPolicy.holderName }}</span>
+                </div>
+                <div class="summary-row" *ngIf="getPolicyState(selectedPolicy.id) as paymentState">
+                    <span class="sum-label">Due Status</span>
+                    <span class="sum-value">{{ paymentState.reason }}</span>
                 </div>
                 <div class="summary-row">
                     <span class="sum-label">Method</span>

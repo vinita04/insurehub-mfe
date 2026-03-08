@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Policy, POLICY_TYPE_ICONS, STATUS_COLORS } from '../shared/models/policy.model';
 import { Payment, PAYMENT_STATUS_COLORS } from '../shared/models/payment.model';
 import { StorageService } from '../shared/services/storage.service';
+import { getPolicyPaymentState } from '../shared/utils/payment-due';
 
 @Component({
   selector: 'app-home',
@@ -20,8 +21,10 @@ export class HomeComponent implements OnInit {
     activePolicies: 0,
     totalPremium: 0,
     totalPaid: 0,
+    duePolicies: 0,
   };
   recentPayments: Payment[] = [];
+  duePolicies: Array<{ policy: Policy; reason: string; nextDueDate: string }> = [];
 
   readonly POLICY_TYPE_ICONS = POLICY_TYPE_ICONS;
   readonly STATUS_COLORS = STATUS_COLORS;
@@ -41,6 +44,16 @@ export class HomeComponent implements OnInit {
     this.stats.totalPaid = this.payments
       .filter(p => p.status === 'success')
       .reduce((sum, p) => sum + p.amount, 0);
+    this.duePolicies = this.policies
+      .map(policy => ({ policy, paymentState: getPolicyPaymentState(policy, this.payments) }))
+      .filter(item => item.paymentState.isPayable)
+      .map(item => ({
+        policy: item.policy,
+        reason: item.paymentState.reason,
+        nextDueDate: item.paymentState.nextDueDate,
+      }))
+      .slice(0, 3);
+    this.stats.duePolicies = this.duePolicies.length;
 
     this.recentPayments = this.payments.slice(0, 3);
   }

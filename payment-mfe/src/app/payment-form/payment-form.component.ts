@@ -7,6 +7,7 @@ import { Policy, POLICY_TYPE_LABELS } from '../shared/models/policy.model';
 import { Payment, PaymentMethod, PAYMENT_METHOD_LABELS } from '../shared/models/payment.model';
 import { StorageService } from '../shared/services/storage.service';
 import { EventBusService, MFE_EVENTS } from '../shared/services/event-bus.service';
+import { PolicyPaymentState, getPolicyPaymentState } from '../shared/utils/payment-due';
 
 interface PaymentData {
   policyId: string;
@@ -24,6 +25,8 @@ interface PaymentData {
 })
 export class PaymentFormComponent implements OnInit, OnDestroy {
   policies: Policy[] = [];
+  payablePolicies: Policy[] = [];
+  paymentStates: Record<string, PolicyPaymentState> = {};
   selectedPolicyId = '';
   selectedPolicy: Policy | null = null;
   amount: number = 0;
@@ -36,6 +39,10 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
   paymentSuccess = false;
   errors: Record<string, string> = {};
   crossMfeData: PaymentData | null = null;
+  dueSummary = {
+    dueCount: 0,
+    dueAmount: 0,
+  };
   private subscription: Subscription | null = null;
 
   readonly PAYMENT_METHOD_LABELS = PAYMENT_METHOD_LABELS;
@@ -48,12 +55,31 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.policies = (this.storage.get<Policy[]>('insurance_policies') || [])
-      .filter(p => p.status === 'active');
+    const payments = this.storage.get<Payment[]>('insurance_payments') || [];
+    this.policies = this.storage.get<Policy[]>('insurance_policies') || [];
+    this.paymentStates = this.policies.reduce<Record<string, PolicyPaymentState>>((acc, policy) => {
+      acc[policy.id] = getPolicyPaymentState(policy, payments);
+      return acc;
+    }, {});
+    this.payablePolicies = this.policies.filter(policy => this.paymentStates[policy.id]?.isPayable);
+    this.dueSummary = {
+      dueCount: this.payablePolicies.length,
+      dueAmount: this.payablePolicies.reduce((sum, policy) => sum + policy.premiumAmount, 0),
+    };
 
     // Listen for cross-MFE payment data
     this.subscription = this.eventBus.on<PaymentData>(MFE_EVENTS.NAVIGATE_TO_PAYMENT)
       .subscribe(data => {
+        const paymentState = this.paymentStates[data.policyId];
+        if (!paymentState?.isPayable) {
+          this.crossMfeData = null;
+          this.selectedPolicyId = '';
+          this.selectedPolicy = null;
+          this.amount = 0;
+          this.errors['policy'] = paymentState?.reason || 'This policy is not currently payable';
+          return;
+        }
+
         this.crossMfeData = data;
         this.selectedPolicyId = data.policyId;
         this.amount = data.amount;
@@ -66,10 +92,15 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
   }
 
   onPolicyChange(): void {
-    this.selectedPolicy = this.policies.find(p => p.id === this.selectedPolicyId) || null;
+    delete this.errors['policy'];
+    this.selectedPolicy = this.payablePolicies.find(p => p.id === this.selectedPolicyId) || null;
     if (this.selectedPolicy && !this.crossMfeData) {
       this.amount = this.selectedPolicy.premiumAmount;
     }
+  }
+
+  getPolicyState(policyId: string): PolicyPaymentState | null {
+    return this.paymentStates[policyId] || null;
   }
 
   onCardNumberInput(event: Event): void {
@@ -135,7 +166,9 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
   validate(): boolean {
     this.errors = {};
     if (!this.selectedPolicy) {
-      this.errors['policy'] = 'Please select a policy';
+      this.errors['policy'] = this.payablePolicies.length
+        ? 'Please select a due policy'
+        : 'No policies require payment right now';
     }
     if (!this.amount || this.amount <= 0) {
       this.errors['amount'] = 'Enter a valid amount';
@@ -233,5 +266,6 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
     this.cardExpiry = '';
     this.cardCvv = '';
     this.upiId = '';
+    this.errors = {};
   }
 }

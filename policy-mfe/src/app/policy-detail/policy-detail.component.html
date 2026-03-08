@@ -119,7 +119,7 @@
     </div>
 
     <!-- Action -->
-    <div class="action-bar" *ngIf="policy.status === 'active'">
+    <div class="action-bar" *ngIf="policy.status === 'active' || policy.status === 'pending'">
         <button class="pay-btn" (click)="payPremium()">
             <span class="material-icons-outlined">payments</span>
             Pay Premium — ₹{{ premiumCalc?.totalWithTax || policy.premiumAmount | number:'1.0-0' }}

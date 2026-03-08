@@ -9,8 +9,8 @@ export const MOCK_POLICIES: Policy[] = [
     type: 'health',
     premiumAmount: 1500,
     premiumFrequency: 'monthly',
-    startDate: '2024-01-15',
-    endDate: '2025-01-14',
+    startDate: '2025-10-15',
+    endDate: '2026-10-14',
     status: 'active',
     coverageAmount: 500000,
     nominee: 'Priya Kumar',
@@ -23,8 +23,8 @@ export const MOCK_POLICIES: Policy[] = [
     type: 'life',
     premiumAmount: 3500,
     premiumFrequency: 'quarterly',
-    startDate: '2024-03-01',
-    endDate: '2044-02-28',
+    startDate: '2025-09-01',
+    endDate: '2045-08-31',
     status: 'active',
     coverageAmount: 2500000,
     nominee: 'Priya Kumar',
@@ -37,8 +37,8 @@ export const MOCK_POLICIES: Policy[] = [
     type: 'auto',
     premiumAmount: 850,
     premiumFrequency: 'semi-annual',
-    startDate: '2024-06-01',
-    endDate: '2025-05-31',
+    startDate: '2025-03-01',
+    endDate: '2026-12-31',
     status: 'active',
     coverageAmount: 750000,
     nominee: 'N/A',
@@ -65,8 +65,8 @@ export const MOCK_POLICIES: Policy[] = [
     type: 'travel',
     premiumAmount: 450,
     premiumFrequency: 'monthly',
-    startDate: '2024-11-01',
-    endDate: '2025-04-30',
+    startDate: '2026-03-05',
+    endDate: '2026-09-04',
     status: 'pending',
     coverageAmount: 1000000,
     nominee: 'Self',
@@ -94,53 +94,53 @@ export const MOCK_PAYMENTS: Payment[] = [
     policyId: 'pol-001',
     policyNumber: 'HLT-2024-001',
     amount: 1500,
-    date: '2024-12-15',
+    date: '2026-02-15',
     status: 'success',
     method: 'credit_card',
     cardLast4: '4242',
-    transactionId: 'TXN-2024-DEC-001'
+    transactionId: 'TXN-2026-FEB-001'
   },
   {
     id: 'pay-002',
     policyId: 'pol-001',
     policyNumber: 'HLT-2024-001',
     amount: 1500,
-    date: '2024-11-15',
+    date: '2026-01-15',
     status: 'success',
     method: 'credit_card',
     cardLast4: '4242',
-    transactionId: 'TXN-2024-NOV-001'
+    transactionId: 'TXN-2026-JAN-001'
   },
   {
     id: 'pay-003',
     policyId: 'pol-002',
     policyNumber: 'LIF-2024-002',
     amount: 3500,
-    date: '2024-12-01',
+    date: '2025-12-01',
     status: 'success',
     method: 'net_banking',
-    transactionId: 'TXN-2024-DEC-002'
+    transactionId: 'TXN-2025-DEC-002'
   },
   {
     id: 'pay-004',
     policyId: 'pol-003',
     policyNumber: 'AUT-2024-003',
     amount: 850,
-    date: '2024-12-01',
+    date: '2026-03-01',
     status: 'pending',
     method: 'upi',
-    transactionId: 'TXN-2024-DEC-003'
+    transactionId: 'TXN-2026-MAR-003'
   },
   {
     id: 'pay-005',
     policyId: 'pol-005',
     policyNumber: 'TRV-2024-005',
     amount: 450,
-    date: '2024-11-01',
+    date: '2026-03-05',
     status: 'failed',
     method: 'debit_card',
     cardLast4: '8888',
-    transactionId: 'TXN-2024-NOV-005'
+    transactionId: 'TXN-2026-MAR-005'
   }
 ];
 

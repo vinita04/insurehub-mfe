@@ -31,6 +31,12 @@
     border-radius: $radius-md;
     border: 1px solid $border-color;
     width: fit-content;
+
+    @media (max-width: 640px) {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 6px;
+    }
 }
 
 .filter-btn {
@@ -71,6 +77,10 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: $space-md;
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+    }
 }
 
 .policy-card {
@@ -159,6 +169,44 @@
 .card-footer {
     display: flex;
     justify-content: flex-end;
+}
+
+.payment-state {
+    display: flex;
+    gap: $space-sm;
+    align-items: flex-start;
+    padding-top: $space-md;
+    border-top: 1px solid $border-color;
+    color: $text-secondary;
+
+    .material-icons-outlined {
+        font-size: 18px !important;
+        color: $text-muted;
+    }
+
+    strong,
+    span {
+        display: block;
+    }
+
+    strong {
+        font-size: $font-size-xs;
+        color: $text-primary;
+    }
+
+    span {
+        font-size: $font-size-xs;
+        color: $text-muted;
+        margin-top: 2px;
+    }
+
+    &.payable .material-icons-outlined {
+        color: $accent-primary;
+    }
+
+    &.overdue .material-icons-outlined {
+        color: $warning;
+    }
 }
 
 .view-link {

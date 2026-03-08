@@ -247,3 +247,62 @@
     flex: 1;
     overflow-y: auto;
 }
+
+@media (max-width: 900px) {
+    .app-layout {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid $border-color;
+
+        .sidebar-collapsed & {
+            width: 100%;
+            min-width: 100%;
+        }
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: $space-md;
+    }
+
+    .nav-item {
+        flex: 0 0 auto;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .top-bar {
+        padding: 0 $space-md;
+    }
+}
+
+@media (max-width: 640px) {
+    .sidebar-header,
+    .top-bar {
+        height: auto;
+        min-height: 56px;
+    }
+
+    .top-bar {
+        align-items: flex-start;
+        gap: $space-sm;
+        padding-top: $space-sm;
+        padding-bottom: $space-sm;
+    }
+
+    .page-greeting {
+        line-height: 1.4;
+    }
+}

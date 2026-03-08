@@ -8,12 +8,20 @@
 // Stats Grid
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: $space-md;
     margin-bottom: $space-2xl;
 
+    @media (max-width: 1100px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
     @media (max-width: 900px) {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 560px) {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -70,6 +78,14 @@
             color: $info;
         }
     }
+
+    &.warning {
+        background: rgba($warning, 0.14);
+
+        .material-icons-outlined {
+            color: $warning;
+        }
+    }
 }
 
 .stat-content {
@@ -95,6 +111,54 @@
 
 .section-title {
     @include section-title;
+}
+
+.due-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-md;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.due-card {
+    @include card;
+    display: flex;
+    justify-content: space-between;
+    gap: $space-md;
+    align-items: flex-start;
+    padding: $space-lg;
+    text-decoration: none;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+    }
+}
+
+.due-policy,
+.due-meta,
+.due-date {
+    display: block;
+}
+
+.due-policy {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+}
+
+.due-meta {
+    font-size: $font-size-xs;
+    color: $text-muted;
+    margin-top: 4px;
+}
+
+.due-date {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $warning;
 }
 
 // Actions Grid
@@ -171,6 +235,10 @@
     &:hover {
         box-shadow: $shadow-sm;
     }
+
+    @media (max-width: 640px) {
+        overflow-x: auto;
+    }
 }
 
 .table-row {
@@ -192,6 +260,10 @@
         text-transform: uppercase;
         letter-spacing: 0.04em;
         background: $bg-primary;
+    }
+
+    @media (max-width: 640px) {
+        min-width: 620px;
     }
 }
 
