@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Policy, POLICY_TYPE_ICONS, STATUS_COLORS } from '../shared/models/policy.model';
+import {
+  Policy,
+  POLICY_TYPE_ICONS,
+  STATUS_COLORS,
+} from '../shared/models/policy.model';
 import { Payment, PAYMENT_STATUS_COLORS } from '../shared/models/payment.model';
 import { StorageService } from '../shared/services/storage.service';
 import { resetMockData } from '../shared/data/mock-data';
@@ -25,7 +29,8 @@ export class HomeComponent implements OnInit {
     duePolicies: 0,
   };
   recentPayments: Payment[] = [];
-  duePolicies: Array<{ policy: Policy; reason: string; nextDueDate: string }> = [];
+  duePolicies: Array<{ policy: Policy; reason: string; nextDueDate: string }> =
+    [];
 
   readonly POLICY_TYPE_ICONS = POLICY_TYPE_ICONS;
   readonly STATUS_COLORS = STATUS_COLORS;
@@ -42,17 +47,22 @@ export class HomeComponent implements OnInit {
     this.payments = this.storage.get<Payment[]>('insurance_payments') || [];
 
     this.stats.totalPolicies = this.policies.length;
-    this.stats.activePolicies = this.policies.filter(p => p.status === 'active').length;
+    this.stats.activePolicies = this.policies.filter(
+      (p) => p.status === 'active',
+    ).length;
     this.stats.totalPremium = this.policies
-      .filter(p => p.status === 'active')
+      .filter((p) => p.status === 'active')
       .reduce((sum, p) => sum + p.premiumAmount, 0);
     this.stats.totalPaid = this.payments
-      .filter(p => p.status === 'success')
+      .filter((p) => p.status === 'success')
       .reduce((sum, p) => sum + p.amount, 0);
     this.duePolicies = this.policies
-      .map(policy => ({ policy, paymentState: getPolicyPaymentState(policy, this.payments) }))
-      .filter(item => item.paymentState.isPayable)
-      .map(item => ({
+      .map((policy) => ({
+        policy,
+        paymentState: getPolicyPaymentState(policy, this.payments),
+      }))
+      .filter((item) => item.paymentState.isPayable)
+      .map((item) => ({
         policy: item.policy,
         reason: item.paymentState.reason,
         nextDueDate: item.paymentState.nextDueDate,
@@ -64,7 +74,9 @@ export class HomeComponent implements OnInit {
   }
 
   resetSimulation(): void {
-    const shouldReset = window.confirm('Clear the shared demo data and reseed the app to its initial 2025-2026 state?');
+    const shouldReset = window.confirm(
+      'Do you want to reset demo data to its initial state?',
+    );
     if (!shouldReset) return;
 
     resetMockData();
