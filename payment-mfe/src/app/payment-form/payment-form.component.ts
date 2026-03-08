@@ -55,17 +55,7 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const payments = this.storage.get<Payment[]>('insurance_payments') || [];
-    this.policies = this.storage.get<Policy[]>('insurance_policies') || [];
-    this.paymentStates = this.policies.reduce<Record<string, PolicyPaymentState>>((acc, policy) => {
-      acc[policy.id] = getPolicyPaymentState(policy, payments);
-      return acc;
-    }, {});
-    this.payablePolicies = this.policies.filter(policy => this.paymentStates[policy.id]?.isPayable);
-    this.dueSummary = {
-      dueCount: this.payablePolicies.length,
-      dueAmount: this.payablePolicies.reduce((sum, policy) => sum + policy.premiumAmount, 0),
-    };
+    this.refreshPaymentState();
 
     // Listen for cross-MFE payment data
     this.subscription = this.eventBus.on<PaymentData>(MFE_EVENTS.NAVIGATE_TO_PAYMENT)
@@ -101,6 +91,38 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
 
   getPolicyState(policyId: string): PolicyPaymentState | null {
     return this.paymentStates[policyId] || null;
+  }
+
+  private refreshPaymentState(): void {
+    const payments = this.storage.get<Payment[]>('insurance_payments') || [];
+    this.policies = this.storage.get<Policy[]>('insurance_policies') || [];
+    this.paymentStates = this.policies.reduce<Record<string, PolicyPaymentState>>((acc, policy) => {
+      acc[policy.id] = getPolicyPaymentState(policy, payments);
+      return acc;
+    }, {});
+    this.payablePolicies = this.policies
+      .filter(policy => this.paymentStates[policy.id]?.isPayable)
+      .sort((a, b) => this.comparePayablePolicies(a, b));
+    this.dueSummary = {
+      dueCount: this.payablePolicies.length,
+      dueAmount: this.payablePolicies.reduce((sum, policy) => sum + policy.premiumAmount, 0),
+    };
+  }
+
+  private comparePayablePolicies(a: Policy, b: Policy): number {
+    const stateA = this.paymentStates[a.id];
+    const stateB = this.paymentStates[b.id];
+
+    if (stateA?.isOverdue !== stateB?.isOverdue) {
+      return stateA?.isOverdue ? -1 : 1;
+    }
+
+    const dueCompare = (stateA?.nextDueDate || '').localeCompare(stateB?.nextDueDate || '');
+    if (dueCompare !== 0) {
+      return dueCompare;
+    }
+
+    return a.policyNumber.localeCompare(b.policyNumber);
   }
 
   onCardNumberInput(event: Event): void {
@@ -233,6 +255,7 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
       const payments = this.storage.get<Payment[]>('insurance_payments') || [];
       payments.unshift(newPayment);
       this.storage.set('insurance_payments', payments);
+      this.refreshPaymentState();
 
       // Emit payment completed event
       this.eventBus.emit(MFE_EVENTS.PAYMENT_COMPLETED, newPayment, 'payment-mfe');

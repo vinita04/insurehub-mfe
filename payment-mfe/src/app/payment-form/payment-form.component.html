@@ -51,9 +51,10 @@
                     <select class="form-select" [(ngModel)]="selectedPolicyId" (ngModelChange)="onPolicyChange()">
                         <option value="" disabled>{{ payablePolicies.length ? 'Choose a due policy...' : 'No payable policies available' }}</option>
                         <option *ngFor="let p of payablePolicies" [value]="p.id">
-                            {{ p.policyNumber }} — {{ p.type | titlecase }} (₹{{ p.premiumAmount }}) • {{ getPolicyState(p.id)?.nextDueDate }}
+                            {{ p.policyNumber }} — {{ p.type | titlecase }} (₹{{ p.premiumAmount }}) • {{ getPolicyState(p.id)?.reason }}
                         </option>
                     </select>
+                    <span class="field-hint" *ngIf="payablePolicies.length">All payable policies are listed here, including overdue premiums and pending activations.</span>
                     <span class="field-error" *ngIf="errors['policy']">{{ errors['policy'] }}</span>
                 </div>
 

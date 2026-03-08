@@ -17,6 +17,16 @@
     }
 }
 
+.header-actions {
+    display: flex;
+    gap: $space-sm;
+
+    @media (max-width: 640px) {
+        width: 100%;
+        flex-direction: column;
+    }
+}
+
 .page-title {
     font-size: $font-size-2xl;
     font-weight: $font-weight-bold;
@@ -30,6 +40,14 @@
 }
 
 .back-btn {
+    @include button-ghost;
+
+    .material-icons-outlined {
+        font-size: 18px !important;
+    }
+}
+
+.reset-btn {
     @include button-ghost;
 
     .material-icons-outlined {

@@ -1,4 +1,15 @@
 <div class="home-page">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Shared demo state across the container, Policy MFE, and Payment MFE.</p>
+        </div>
+        <button class="reset-btn" (click)="resetSimulation()">
+            <span class="material-icons-outlined">restart_alt</span>
+            Reset Demo Data
+        </button>
+    </div>
+
     <!-- Stats Grid -->
     <div class="stats-grid">
         <div class="stat-card">
@@ -95,6 +106,16 @@
                 </div>
                 <span class="material-icons-outlined action-arrow">arrow_forward</span>
             </a>
+            <button class="action-card action-button" (click)="resetSimulation()">
+                <div class="action-icon">
+                    <span class="material-icons-outlined">restart_alt</span>
+                </div>
+                <div class="action-text">
+                    <span class="action-label">Reset Simulation</span>
+                    <span class="action-desc">Clear local demo state and replay the seeded scenario</span>
+                </div>
+                <span class="material-icons-outlined action-arrow">refresh</span>
+            </button>
         </div>
     </div>
 

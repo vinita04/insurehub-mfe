@@ -203,6 +203,45 @@
     color: $text-primary;
 }
 
+.payment-state-banner {
+    display: flex;
+    gap: $space-sm;
+    align-items: flex-start;
+    margin-bottom: $space-lg;
+    padding: 12px $space-md;
+    border-radius: $radius-md;
+    background: rgba($text-muted, 0.08);
+    border: 1px solid rgba($text-muted, 0.16);
+    color: $text-secondary;
+
+    &.payable {
+        background: rgba($info, 0.08);
+        border-color: rgba($info, 0.16);
+        color: $info;
+    }
+
+    &.overdue {
+        background: rgba($warning, 0.12);
+        border-color: rgba($warning, 0.2);
+        color: $warning;
+    }
+
+    .material-icons-outlined {
+        font-size: 18px !important;
+    }
+
+    strong,
+    span {
+        display: block;
+    }
+
+    span {
+        font-size: $font-size-xs;
+        opacity: 0.88;
+        margin-top: 2px;
+    }
+}
+
 // Action
 .action-bar {
     padding-top: $space-lg;

@@ -5,6 +5,38 @@
     @include page-container;
 }
 
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $space-md;
+    margin-bottom: $space-xl;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+    }
+}
+
+.page-title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: 4px;
+}
+
+.page-subtitle {
+    font-size: $font-size-sm;
+    color: $text-muted;
+}
+
+.reset-btn {
+    @include button-ghost;
+
+    .material-icons-outlined {
+        font-size: 18px !important;
+    }
+}
+
 // Stats Grid
 .stats-grid {
     display: grid;
@@ -181,6 +213,14 @@
     cursor: pointer;
     text-decoration: none;
     animation: slideUp 0.3s ease both;
+}
+
+.action-button {
+    width: 100%;
+    border: 1px solid $border-color;
+    background: white;
+    font-family: $font-family;
+    text-align: left;
 }
 
 .action-icon {

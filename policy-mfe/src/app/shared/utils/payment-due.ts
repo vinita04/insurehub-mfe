@@ -52,7 +52,7 @@ export function getPolicyPaymentState(policy: Policy, payments: Payment[], now =
       lastSuccessfulPaymentDate,
       isPayable: false,
       isOverdue: false,
-      reason: 'Policy is not payable',
+      reason: policy.status === 'expired' || endDate < today ? 'Policy expired' : 'Policy cancelled',
     };
   }
 
@@ -64,7 +64,7 @@ export function getPolicyPaymentState(policy: Policy, payments: Payment[], now =
       lastSuccessfulPaymentDate,
       isPayable,
       isOverdue: isPayable,
-      reason: isPayable ? 'Activation payment pending' : 'Activation payment not due yet',
+      reason: isPayable ? 'Pending activation - pay now to start coverage' : 'Pending activation',
     };
   }
 
@@ -78,9 +78,9 @@ export function getPolicyPaymentState(policy: Policy, payments: Payment[], now =
     isPayable,
     isOverdue,
     reason: isOverdue
-      ? `Premium overdue since ${formatDate(nextDueDate)}`
+      ? 'Overdue - pay now to continue coverage'
       : isPayable
-        ? `Premium due on ${formatDate(nextDueDate)}`
+        ? 'Premium due now'
         : `Paid through ${formatDate(addMonths(nextDueDate, -FREQUENCY_MONTHS[policy.premiumFrequency]))}`,
   };
 }

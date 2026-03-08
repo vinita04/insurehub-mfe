@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Policy, POLICY_TYPE_ICONS, STATUS_COLORS } from '../shared/models/policy.model';
 import { Payment, PAYMENT_STATUS_COLORS } from '../shared/models/payment.model';
 import { StorageService } from '../shared/services/storage.service';
+import { resetMockData } from '../shared/data/mock-data';
 import { getPolicyPaymentState } from '../shared/utils/payment-due';
 
 @Component({
@@ -33,6 +34,10 @@ export class HomeComponent implements OnInit {
   constructor(private storage: StorageService) {}
 
   ngOnInit(): void {
+    this.loadDashboard();
+  }
+
+  loadDashboard(): void {
     this.policies = this.storage.get<Policy[]>('insurance_policies') || [];
     this.payments = this.storage.get<Payment[]>('insurance_payments') || [];
 
@@ -56,5 +61,13 @@ export class HomeComponent implements OnInit {
     this.stats.duePolicies = this.duePolicies.length;
 
     this.recentPayments = this.payments.slice(0, 3);
+  }
+
+  resetSimulation(): void {
+    const shouldReset = window.confirm('Clear the shared demo data and reseed the app to its initial 2025-2026 state?');
+    if (!shouldReset) return;
+
+    resetMockData();
+    window.location.reload();
   }
 }

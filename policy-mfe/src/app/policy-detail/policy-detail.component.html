@@ -119,7 +119,15 @@
     </div>
 
     <!-- Action -->
-    <div class="action-bar" *ngIf="policy.status === 'active' || policy.status === 'pending'">
+    <div class="payment-state-banner" *ngIf="paymentState" [class.payable]="paymentState.isPayable" [class.overdue]="paymentState.isOverdue">
+        <span class="material-icons-outlined">{{ paymentState.isOverdue ? 'warning' : paymentState.isPayable ? 'payments' : 'schedule' }}</span>
+        <div>
+            <strong>{{ paymentState.reason }}</strong>
+            <span>Next due: {{ paymentState.nextDueDate }}</span>
+        </div>
+    </div>
+
+    <div class="action-bar" *ngIf="paymentState?.isPayable">
         <button class="pay-btn" (click)="payPremium()">
             <span class="material-icons-outlined">payments</span>
             Pay Premium — ₹{{ premiumCalc?.totalWithTax || policy.premiumAmount | number:'1.0-0' }}

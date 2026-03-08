@@ -2,8 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Policy, PolicyType, POLICY_TYPE_LABELS, STATUS_COLORS } from '../shared/models/policy.model';
+import { Payment } from '../shared/models/payment.model';
 import { StorageService } from '../shared/services/storage.service';
 import { EventBusService, MFE_EVENTS } from '../shared/services/event-bus.service';
+import { PolicyPaymentState, getPolicyPaymentState } from '../shared/utils/payment-due';
 
 const POLICY_MATERIAL_ICONS: Record<PolicyType, string> = {
   health: 'local_hospital',
@@ -66,6 +68,7 @@ function calculatePremiumDetails(input: any): any {
 })
 export class PolicyDetailComponent implements OnInit, OnDestroy {
   policy: Policy | null = null;
+  paymentState: PolicyPaymentState | null = null;
   premiumCalc: any = null;
   isCalculating = true;
   workerUsed = false;
@@ -84,8 +87,10 @@ export class PolicyDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     const policies = this.storage.get<Policy[]>('insurance_policies') || [];
+    const payments = this.storage.get<Payment[]>('insurance_payments') || [];
     this.policy = policies.find(p => p.id === id) || null;
     if (this.policy) {
+      this.paymentState = getPolicyPaymentState(this.policy, payments);
       this.startPremiumCalculation(this.policy);
     }
   }

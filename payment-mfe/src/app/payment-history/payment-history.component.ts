@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Payment, PAYMENT_METHOD_LABELS, PAYMENT_STATUS_COLORS } from '../shared/models/payment.model';
 import { StorageService } from '../shared/services/storage.service';
+import { resetMockData } from '../shared/data/mock-data';
 
 @Component({
   selector: 'app-payment-history',
@@ -14,6 +15,8 @@ import { StorageService } from '../shared/services/storage.service';
 export class PaymentHistoryComponent implements OnInit {
   payments: Payment[] = [];
   totalPaid = 0;
+  successfulPaymentCount = 0;
+  paidPolicyCount = 0;
 
   readonly PAYMENT_METHOD_LABELS = PAYMENT_METHOD_LABELS;
   readonly PAYMENT_STATUS_COLORS = PAYMENT_STATUS_COLORS;
@@ -24,9 +27,15 @@ export class PaymentHistoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadHistory();
+  }
+
+  loadHistory(): void {
     this.payments = this.storage.get<Payment[]>('insurance_payments') || [];
-    this.totalPaid = this.payments
-      .filter(p => p.status === 'success')
+    const successfulPayments = this.payments.filter(p => p.status === 'success');
+    this.successfulPaymentCount = successfulPayments.length;
+    this.paidPolicyCount = new Set(successfulPayments.map(payment => payment.policyId)).size;
+    this.totalPaid = successfulPayments
       .reduce((sum, p) => sum + p.amount, 0);
   }
 
@@ -42,5 +51,13 @@ export class PaymentHistoryComponent implements OnInit {
       upi: 'phone_android',
     };
     return icons[method] || 'payments';
+  }
+
+  resetSimulation(): void {
+    const shouldReset = window.confirm('Clear the shared demo data and reseed the app to its initial 2025-2026 state?');
+    if (!shouldReset) return;
+
+    resetMockData();
+    window.location.reload();
   }
 }

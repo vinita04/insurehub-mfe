@@ -4,10 +4,16 @@
             <h1 class="page-title">Payment History</h1>
             <p class="page-subtitle">View all your past premium payments</p>
         </div>
-        <button class="back-btn" (click)="goBack()">
-            <span class="material-icons-outlined">arrow_back</span>
-            Make a Payment
-        </button>
+        <div class="header-actions">
+            <button class="back-btn" (click)="goBack()">
+                <span class="material-icons-outlined">arrow_back</span>
+                Make a Payment
+            </button>
+            <button class="reset-btn" (click)="resetSimulation()">
+                <span class="material-icons-outlined">restart_alt</span>
+                Reset Demo Data
+            </button>
+        </div>
     </div>
 
     <!-- Summary -->
@@ -24,6 +30,13 @@
             <div>
                 <span class="sum-label">Total Paid</span>
                 <span class="sum-value">₹{{ totalPaid | number }}</span>
+            </div>
+        </div>
+        <div class="summary-item">
+            <span class="material-icons-outlined sum-icon">verified</span>
+            <div>
+                <span class="sum-label">Policies Paid</span>
+                <span class="sum-value">{{ paidPolicyCount }}</span>
             </div>
         </div>
     </div>
