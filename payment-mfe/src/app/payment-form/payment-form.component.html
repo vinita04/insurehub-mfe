@@ -1,0 +1,140 @@
+<div class="payment-page">
+    <!-- Success State -->
+    <div class="success-overlay" *ngIf="paymentSuccess">
+        <div class="success-card">
+            <div class="success-icon-wrap">
+                <span class="material-icons-outlined success-icon">check_circle</span>
+            </div>
+            <h2>Payment Successful</h2>
+            <p>Your premium payment has been processed successfully.</p>
+            <div class="success-actions">
+                <button class="btn-primary" (click)="viewHistory()">
+                    <span class="material-icons-outlined">history</span>
+                    View Payment History
+                </button>
+                <button class="btn-ghost" (click)="makeAnother()">Make Another Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Form -->
+    <div class="form-content" *ngIf="!paymentSuccess">
+        <div class="page-header">
+            <h1 class="page-title">Pay Premium</h1>
+            <p class="page-subtitle">Make a secure premium payment for your insurance policy</p>
+        </div>
+
+        <!-- Cross-MFE data indicator -->
+        <div class="cross-mfe-banner" *ngIf="crossMfeData">
+            <span class="material-icons-outlined">link</span>
+            <span>Payment pre-filled from <strong>Policy MFE</strong> — {{ crossMfeData.policyNumber }}</span>
+        </div>
+
+        <div class="form-layout">
+            <!-- Left: Form -->
+            <div class="form-card">
+                <h3 class="form-title">Payment Details</h3>
+
+                <div class="form-group">
+                    <label class="form-label">Select Policy</label>
+                    <select class="form-select" [(ngModel)]="selectedPolicyId" (ngModelChange)="onPolicyChange()">
+                        <option value="" disabled>Choose a policy...</option>
+                        <option *ngFor="let p of policies" [value]="p.id">
+                            {{ p.policyNumber }} — {{ p.type | titlecase }} (₹{{ p.premiumAmount }})
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Amount (₹)</label>
+                    <input type="number" class="form-input" [(ngModel)]="amount" placeholder="Enter amount" min="0" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Payment Method</label>
+                    <div class="method-grid">
+                        <button *ngFor="let method of paymentMethods" class="method-btn"
+                            [class.active]="paymentMethod === method" (click)="paymentMethod = method">
+                            <span class="material-icons-outlined method-icon">{{ getMethodIcon(method) }}</span>
+                            <span class="method-label">{{ PAYMENT_METHOD_LABELS[method] }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-details" *ngIf="paymentMethod === 'credit_card' || paymentMethod === 'debit_card'">
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-input" [class.input-error]="errors['cardNumber']"
+                            [value]="cardNumber" (input)="onCardNumberInput($event)"
+                            placeholder="Enter 16 digit card number" maxlength="16" inputmode="numeric"
+                            autocomplete="cc-number" />
+                        <span class="field-error" *ngIf="errors['cardNumber']">{{ errors['cardNumber'] }}</span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Expiry</label>
+                            <input type="text" class="form-input" [class.input-error]="errors['cardExpiry']"
+                                [value]="cardExpiry" (input)="onExpiryInput($event)" placeholder="MM/YY" maxlength="5"
+                                inputmode="numeric" />
+                            <span class="field-error" *ngIf="errors['cardExpiry']">{{ errors['cardExpiry'] }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">CVV</label>
+                            <input type="password" class="form-input" [class.input-error]="errors['cardCvv']"
+                                [value]="cardCvv" (input)="onCvvInput($event)" placeholder="•••" maxlength="4"
+                                inputmode="numeric" />
+                            <span class="field-error" *ngIf="errors['cardCvv']">{{ errors['cardCvv'] }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upi-details" *ngIf="paymentMethod === 'upi'">
+                    <div class="form-group">
+                        <label class="form-label">UPI ID</label>
+                        <input type="text" class="form-input" [class.input-error]="errors['upiId']" [(ngModel)]="upiId"
+                            (ngModelChange)="validateField('upiId')" placeholder="your@upi" />
+                        <span class="field-error" *ngIf="errors['upiId']">{{ errors['upiId'] }}</span>
+                    </div>
+                </div>
+
+                <button class="pay-submit-btn" [disabled]="!isFormValid || isProcessing" (click)="processPayment()">
+                    <span *ngIf="!isProcessing">Pay ₹{{ amount | number:'1.0-0' }}</span>
+                    <span *ngIf="isProcessing" class="processing">
+                        <span class="spinner"></span>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Right: Summary -->
+            <div class="summary-card" *ngIf="selectedPolicy">
+                <h3 class="summary-title">Payment Summary</h3>
+                <div class="summary-row">
+                    <span class="sum-label">Policy</span>
+                    <span class="sum-value">{{ selectedPolicy.policyNumber }}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="sum-label">Type</span>
+                    <span class="sum-value">{{ selectedPolicy.type | titlecase }} Insurance</span>
+                </div>
+                <div class="summary-row">
+                    <span class="sum-label">Holder</span>
+                    <span class="sum-value">{{ selectedPolicy.holderName }}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="sum-label">Method</span>
+                    <span class="sum-value">{{ PAYMENT_METHOD_LABELS[paymentMethod] }}</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-row total">
+                    <span class="sum-label">Total Amount</span>
+                    <span class="sum-value">₹{{ amount | number:'1.0-0' }}</span>
+                </div>
+                <div class="secure-badge">
+                    <span class="material-icons-outlined">lock</span>
+                    256-bit SSL Encrypted Payment
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

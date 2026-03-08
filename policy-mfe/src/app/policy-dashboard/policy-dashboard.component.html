@@ -1,0 +1,61 @@
+<div class="policy-dashboard">
+    <div class="page-header">
+        <h1 class="page-title">My Insurance Policies</h1>
+        <p class="page-subtitle">View and manage all your insurance policies</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+        <button *ngFor="let f of filters" class="filter-btn" [class.active]="activeFilter === f.key"
+            (click)="applyFilter(f.key)">
+            {{ f.label }}
+            <span class="filter-count" *ngIf="f.key === 'all'">{{ policies.length }}</span>
+        </button>
+    </div>
+
+    <!-- Policy Cards Grid -->
+    <div class="policy-grid">
+        <div class="policy-card" *ngFor="let policy of filteredPolicies; let i = index" (click)="viewPolicy(policy)"
+            [style.animationDelay]="i * 0.04 + 's'">
+            <div class="card-header">
+                <div class="policy-type-badge">
+                    <span class="material-icons-outlined type-icon">{{ getTypeIcon(policy.type) }}</span>
+                    <span class="type-label">{{ POLICY_TYPE_LABELS[policy.type] }}</span>
+                </div>
+                <span class="status-badge" [style.color]="STATUS_COLORS[policy.status]"
+                    [style.background]="STATUS_COLORS[policy.status] + '14'">
+                    {{ policy.status }}
+                </span>
+            </div>
+
+            <div class="card-body">
+                <h3 class="policy-number">{{ policy.policyNumber }}</h3>
+                <p class="policy-desc">{{ policy.description | slice:0:80 }}...</p>
+            </div>
+
+            <div class="card-stats">
+                <div class="stat">
+                    <span class="stat-label">Premium</span>
+                    <span class="stat-value">₹{{ policy.premiumAmount | number }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Coverage</span>
+                    <span class="stat-value">₹{{ policy.coverageAmount | number:'1.0-0' }}</span>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <span class="view-link">
+                    View Details
+                    <span class="material-icons-outlined">arrow_forward</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredPolicies.length === 0">
+        <span class="material-icons-outlined empty-icon">search_off</span>
+        <p>No policies found for this filter.</p>
+    </div>
+</div>

@@ -1,0 +1,102 @@
+<div class="home-page">
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <span class="material-icons-outlined">description</span>
+            </div>
+            <div class="stat-content">
+                <span class="stat-value">{{ stats.totalPolicies }}</span>
+                <span class="stat-label">Total Policies</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon success">
+                <span class="material-icons-outlined">verified</span>
+            </div>
+            <div class="stat-content">
+                <span class="stat-value">{{ stats.activePolicies }}</span>
+                <span class="stat-label">Active Policies</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon accent">
+                <span class="material-icons-outlined">account_balance_wallet</span>
+            </div>
+            <div class="stat-content">
+                <span class="stat-value">₹{{ stats.totalPremium | number }}</span>
+                <span class="stat-label">Monthly Premium</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon info">
+                <span class="material-icons-outlined">receipt_long</span>
+            </div>
+            <div class="stat-content">
+                <span class="stat-value">₹{{ stats.totalPaid | number }}</span>
+                <span class="stat-label">Total Paid</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section">
+        <h3 class="section-title">Quick Actions</h3>
+        <div class="actions-grid">
+            <a routerLink="/policies" class="action-card">
+                <div class="action-icon">
+                    <span class="material-icons-outlined">description</span>
+                </div>
+                <div class="action-text">
+                    <span class="action-label">View Policies</span>
+                    <span class="action-desc">Check your insurance details</span>
+                </div>
+                <span class="material-icons-outlined action-arrow">arrow_forward</span>
+            </a>
+            <a routerLink="/payments" class="action-card">
+                <div class="action-icon">
+                    <span class="material-icons-outlined">payments</span>
+                </div>
+                <div class="action-text">
+                    <span class="action-label">Make Payment</span>
+                    <span class="action-desc">Pay your premium</span>
+                </div>
+                <span class="material-icons-outlined action-arrow">arrow_forward</span>
+            </a>
+            <a routerLink="/payments/history" class="action-card">
+                <div class="action-icon">
+                    <span class="material-icons-outlined">history</span>
+                </div>
+                <div class="action-text">
+                    <span class="action-label">Payment History</span>
+                    <span class="action-desc">View past transactions</span>
+                </div>
+                <span class="material-icons-outlined action-arrow">arrow_forward</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Payments -->
+    <div class="section" *ngIf="recentPayments.length">
+        <h3 class="section-title">Recent Payments</h3>
+        <div class="payments-table">
+            <div class="table-row table-header">
+                <span>Policy</span>
+                <span>Amount</span>
+                <span>Date</span>
+                <span>Status</span>
+            </div>
+            <div class="table-row" *ngFor="let payment of recentPayments">
+                <span class="cell-policy">{{ payment.policyNumber }}</span>
+                <span class="cell-amount">₹{{ payment.amount | number }}</span>
+                <span class="cell-date">{{ payment.date }}</span>
+                <span class="cell-status">
+                    <span class="status-badge" [style.color]="PAYMENT_STATUS_COLORS[payment.status]"
+                        [style.background]="PAYMENT_STATUS_COLORS[payment.status] + '14'">
+                        {{ payment.status }}
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

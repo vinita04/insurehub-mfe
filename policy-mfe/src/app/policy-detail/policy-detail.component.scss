@@ -1,0 +1,229 @@
+@import '../shared/styles/variables';
+@import '../shared/styles/mixins';
+
+.policy-detail {
+    @include page-container;
+}
+
+.back-btn {
+    @include button-ghost;
+    margin-bottom: $space-xl;
+
+    .material-icons-outlined {
+        font-size: 18px !important;
+    }
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: $space-xl;
+}
+
+.policy-type-badge {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    margin-bottom: $space-sm;
+}
+
+.type-icon {
+    font-size: 22px !important;
+    color: $accent-primary;
+}
+
+.type-label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.policy-number {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: 4px;
+}
+
+.policy-desc {
+    font-size: $font-size-sm;
+    color: $text-muted;
+    line-height: 1.6;
+    max-width: 600px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: $radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: capitalize;
+}
+
+// Info Grid
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: $space-md;
+    margin-bottom: $space-2xl;
+}
+
+.info-card {
+    @include card;
+    padding: $space-md;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &.highlight {
+        border-color: rgba($accent-primary, 0.2);
+        background: rgba($accent-primary, 0.02);
+    }
+}
+
+.info-label {
+    font-size: $font-size-xs;
+    color: $text-muted;
+}
+
+.info-value {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+}
+
+// Calc Section
+.calc-section {
+    margin-bottom: $space-2xl;
+}
+
+.calc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $space-lg;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+
+    .material-icons-outlined {
+        font-size: 22px !important;
+        color: $accent-primary;
+    }
+}
+
+.worker-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $accent-secondary;
+    background: rgba($accent-secondary, 0.08);
+    padding: 4px 10px;
+    border-radius: $radius-full;
+
+    .material-icons-outlined {
+        font-size: 14px !important;
+    }
+}
+
+.calc-loading {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+    padding: $space-xl;
+    color: $text-muted;
+    font-size: $font-size-sm;
+
+    .spinner {
+        width: 18px;
+        height: 18px;
+        border: 2px solid $border-color;
+        border-top-color: $accent-primary;
+        border-radius: $radius-full;
+        animation: spin 0.7s linear infinite;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.calc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: $space-md;
+}
+
+.calc-card {
+    @include card;
+    padding: $space-md;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &.accent {
+        border-color: rgba($accent-primary, 0.2);
+        background: rgba($accent-primary, 0.02);
+    }
+}
+
+.calc-label {
+    font-size: $font-size-xs;
+    color: $text-muted;
+}
+
+.calc-value {
+    font-size: $font-size-base;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+}
+
+// Action
+.action-bar {
+    padding-top: $space-lg;
+    border-top: 1px solid $border-color;
+}
+
+.pay-btn {
+    @include button-primary;
+    padding: 12px 24px;
+    font-size: $font-size-sm;
+
+    .material-icons-outlined {
+        font-size: 18px !important;
+    }
+}
+
+// Not Found
+.not-found {
+    text-align: center;
+    padding: $space-2xl * 2;
+    color: $text-muted;
+
+    .nf-icon {
+        font-size: 48px !important;
+        color: $border-color;
+        margin-bottom: $space-md;
+        display: block;
+    }
+
+    h2 {
+        margin-bottom: $space-xl;
+        color: $text-secondary;
+        font-weight: $font-weight-medium;
+    }
+}

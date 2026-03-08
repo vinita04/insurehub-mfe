@@ -1,0 +1,65 @@
+<div class="history-page">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Payment History</h1>
+            <p class="page-subtitle">View all your past premium payments</p>
+        </div>
+        <button class="back-btn" (click)="goBack()">
+            <span class="material-icons-outlined">arrow_back</span>
+            Make a Payment
+        </button>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-strip">
+        <div class="summary-item">
+            <span class="material-icons-outlined sum-icon">receipt_long</span>
+            <div>
+                <span class="sum-label">Total Transactions</span>
+                <span class="sum-value">{{ payments.length }}</span>
+            </div>
+        </div>
+        <div class="summary-item">
+            <span class="material-icons-outlined sum-icon accent">account_balance_wallet</span>
+            <div>
+                <span class="sum-label">Total Paid</span>
+                <span class="sum-value">₹{{ totalPaid | number }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction List -->
+    <div class="transactions">
+        <div class="tx-card" *ngFor="let payment of payments; let i = index" [style.animationDelay]="i * 0.04 + 's'">
+            <div class="tx-left">
+                <div class="tx-icon">
+                    <span class="material-icons-outlined">{{ getMethodIcon(payment.method) }}</span>
+                </div>
+                <div class="tx-info">
+                    <span class="tx-policy">{{ payment.policyNumber }}</span>
+                    <span class="tx-meta">
+                        {{ PAYMENT_METHOD_LABELS[payment.method] }}
+                        <span *ngIf="payment.cardLast4"> •••• {{ payment.cardLast4 }}</span>
+                    </span>
+                </div>
+            </div>
+            <div class="tx-right">
+                <span class="tx-amount">₹{{ payment.amount | number }}</span>
+                <span class="tx-date">{{ payment.date }}</span>
+            </div>
+            <div class="tx-status">
+                <span class="status-badge" [style.color]="PAYMENT_STATUS_COLORS[payment.status]"
+                    [style.background]="PAYMENT_STATUS_COLORS[payment.status] + '14'">
+                    {{ payment.status }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="payments.length === 0">
+        <span class="material-icons-outlined empty-icon">receipt_long</span>
+        <p>No payment history found.</p>
+        <button class="btn-primary" (click)="goBack()">Make Your First Payment</button>
+    </div>
+</div>

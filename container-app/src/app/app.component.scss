@@ -1,0 +1,249 @@
+@import './shared/styles/variables';
+@import './shared/styles/mixins';
+
+.app-layout {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+// =============================================
+// Sidebar
+// =============================================
+.sidebar {
+    width: 240px;
+    min-width: 240px;
+    height: 100vh;
+    background: $bg-secondary;
+    border-right: 1px solid $border-color;
+    display: flex;
+    flex-direction: column;
+    transition: width $transition-base, min-width $transition-base;
+
+    .sidebar-collapsed & {
+        width: 64px;
+        min-width: 64px;
+    }
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-md $space-md;
+    height: 56px;
+    border-bottom: 1px solid $border-color;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+}
+
+.logo-icon {
+    color: $accent-primary;
+    font-size: 24px;
+}
+
+.logo-text {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+}
+
+.toggle-btn {
+    background: transparent;
+    border: none;
+    color: $text-muted;
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-md;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: $bg-primary;
+        color: $text-primary;
+    }
+
+    .material-icons-outlined {
+        font-size: 20px;
+    }
+}
+
+// Navigation
+.sidebar-nav {
+    flex: 1;
+    padding: $space-sm;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: 10px 12px;
+    border-radius: $radius-md;
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    transition: all $transition-fast;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        color: $text-primary;
+        background: $bg-primary;
+    }
+
+    &.active {
+        color: $accent-primary;
+        background: rgba($accent-primary, 0.06);
+        font-weight: $font-weight-semibold;
+    }
+}
+
+.nav-icon {
+    font-size: 20px !important;
+    width: 20px;
+    flex-shrink: 0;
+}
+
+.nav-label {
+    white-space: nowrap;
+}
+
+// Sidebar Footer
+.sidebar-footer {
+    padding: $space-sm;
+    border-top: 1px solid $border-color;
+}
+
+.user-card {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: $space-sm;
+    border-radius: $radius-md;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-full;
+    background: $accent-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    color: $text-white;
+    flex-shrink: 0;
+}
+
+.user-avatar-sm {
+    @extend .user-avatar;
+    width: 32px;
+    height: 32px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+}
+
+.user-role {
+    font-size: $font-size-xs;
+    color: $text-muted;
+}
+
+// =============================================
+// Main Content
+// =============================================
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: $bg-primary;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $space-xl;
+    height: 56px;
+    background: $bg-secondary;
+    border-bottom: 1px solid $border-color;
+}
+
+.page-greeting {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-normal;
+    color: $text-secondary;
+
+    .highlight {
+        color: $text-primary;
+        font-weight: $font-weight-semibold;
+    }
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+}
+
+.icon-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    color: $text-secondary;
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: $bg-primary;
+        color: $text-primary;
+    }
+
+    .material-icons-outlined {
+        font-size: 20px;
+    }
+
+    .badge-dot {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 7px;
+        height: 7px;
+        border-radius: $radius-full;
+        background: $danger;
+        border: 1.5px solid $bg-secondary;
+    }
+}
+
+.content-area {
+    flex: 1;
+    overflow-y: auto;
+}

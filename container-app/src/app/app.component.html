@@ -1,0 +1,59 @@
+<div class="app-layout" [class.sidebar-collapsed]="sidebarCollapsed">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo" *ngIf="!sidebarCollapsed">
+        <span class="material-icons-outlined logo-icon">shield</span>
+        <span class="logo-text">InsureHub</span>
+      </div>
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <span class="material-icons-outlined">{{ sidebarCollapsed ? 'chevron_right' : 'chevron_left' }}</span>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+        <span class="material-icons-outlined nav-icon">dashboard</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Dashboard</span>
+      </a>
+      <a routerLink="/policies" routerLinkActive="active" class="nav-item">
+        <span class="material-icons-outlined nav-icon">description</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">My Policies</span>
+      </a>
+      <a routerLink="/payments" routerLinkActive="active" class="nav-item">
+        <span class="material-icons-outlined nav-icon">payments</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Payments</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer" *ngIf="!sidebarCollapsed">
+      <div class="user-card">
+        <div class="user-avatar">V</div>
+        <div class="user-info">
+          <span class="user-name">Vinita</span>
+          <span class="user-role">Premium Member</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <h2 class="page-greeting">Welcome back, <span class="highlight">Vinita</span></h2>
+      </div>
+      <div class="top-bar-right">
+        <button class="icon-btn">
+          <span class="material-icons-outlined">notifications</span>
+          <span class="badge-dot"></span>
+        </button>
+        <div class="user-avatar-sm">V</div>
+      </div>
+    </header>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

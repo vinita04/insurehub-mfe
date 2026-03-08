@@ -1,0 +1,137 @@
+<div class="policy-detail" *ngIf="policy">
+    <button class="back-btn" (click)="goBack()">
+        <span class="material-icons-outlined">arrow_back</span>
+        Back to Policies
+    </button>
+
+    <!-- Policy Header -->
+    <div class="detail-header">
+        <div class="header-left">
+            <div class="policy-type-badge">
+                <span class="material-icons-outlined type-icon">{{ getTypeIcon(policy.type) }}</span>
+                <span class="type-label">{{ POLICY_TYPE_LABELS[policy.type] }}</span>
+            </div>
+            <h1 class="policy-number">{{ policy.policyNumber }}</h1>
+            <p class="policy-desc">{{ policy.description }}</p>
+        </div>
+        <span class="status-badge" [style.color]="STATUS_COLORS[policy.status]"
+            [style.background]="STATUS_COLORS[policy.status] + '14'">
+            {{ policy.status }}
+        </span>
+    </div>
+
+    <!-- Policy Info Grid -->
+    <div class="info-grid">
+        <div class="info-card">
+            <span class="info-label">Policy Holder</span>
+            <span class="info-value">{{ policy.holderName }}</span>
+        </div>
+        <div class="info-card">
+            <span class="info-label">Nominee</span>
+            <span class="info-value">{{ policy.nominee }}</span>
+        </div>
+        <div class="info-card">
+            <span class="info-label">Start Date</span>
+            <span class="info-value">{{ policy.startDate }}</span>
+        </div>
+        <div class="info-card">
+            <span class="info-label">End Date</span>
+            <span class="info-value">{{ policy.endDate }}</span>
+        </div>
+        <div class="info-card highlight">
+            <span class="info-label">Premium</span>
+            <span class="info-value">₹{{ policy.premiumAmount | number }} / {{ policy.premiumFrequency }}</span>
+        </div>
+        <div class="info-card highlight">
+            <span class="info-label">Coverage Amount</span>
+            <span class="info-value">₹{{ policy.coverageAmount | number }}</span>
+        </div>
+    </div>
+
+    <!-- Premium Calculation Results -->
+    <div class="calc-section">
+        <div class="calc-header">
+            <h2 class="section-title">
+                <span class="material-icons-outlined">analytics</span>
+                Premium Analysis
+            </h2>
+            <span class="worker-badge" *ngIf="workerUsed">
+                <span class="material-icons-outlined">bolt</span>
+                Web Worker
+            </span>
+        </div>
+
+        <div class="calc-loading" *ngIf="isCalculating">
+            <div class="spinner"></div>
+            <span>Calculating premium details...</span>
+        </div>
+
+        <div class="calc-grid" *ngIf="!isCalculating && premiumCalc">
+            <div class="calc-card accent">
+                <span class="calc-label">Annual Premium</span>
+                <span class="calc-value">₹{{ premiumCalc.annualPremium | number }}</span>
+            </div>
+            <div class="calc-card">
+                <span class="calc-label">Monthly Equivalent</span>
+                <span class="calc-value">₹{{ premiumCalc.monthlyEquivalent | number:'1.0-0' }}</span>
+            </div>
+            <div class="calc-card">
+                <span class="calc-label">Discount Tier</span>
+                <span class="calc-value">{{ premiumCalc.discountTier }} ({{ premiumCalc.discountPercentage }}%)</span>
+            </div>
+            <div class="calc-card">
+                <span class="calc-label">Effective Premium</span>
+                <span class="calc-value">₹{{ premiumCalc.effectivePremium | number:'1.0-0' }}</span>
+            </div>
+            <div class="calc-card">
+                <span class="calc-label">GST (18%)</span>
+                <span class="calc-value">₹{{ premiumCalc.taxAmount | number:'1.0-0' }}</span>
+            </div>
+            <div class="calc-card accent">
+                <span class="calc-label">Total with Tax</span>
+                <span class="calc-value">₹{{ premiumCalc.totalWithTax | number:'1.0-0' }}</span>
+            </div>
+            <div class="calc-card">
+                <span class="calc-label">Total Paid to Date</span>
+                <span class="calc-value">₹{{ premiumCalc.totalPaidToDate | number }}</span>
+            </div>
+            <div class="calc-card">
+                <span class="calc-label">Remaining Payments</span>
+                <span class="calc-value">{{ premiumCalc.remainingPayments }}</span>
+            </div>
+            <div class="calc-card">
+                <span class="calc-label">Days Remaining</span>
+                <span class="calc-value">{{ premiumCalc.daysRemaining }}</span>
+            </div>
+            <div class="calc-card">
+                <span class="calc-label">Coverage Ratio</span>
+                <span class="calc-value">{{ premiumCalc.coverageRatio | number:'1.1-1' }}x</span>
+            </div>
+            <div class="calc-card">
+                <span class="calc-label">Next Payment</span>
+                <span class="calc-value">{{ premiumCalc.nextPaymentDate }}</span>
+            </div>
+            <div class="calc-card accent">
+                <span class="calc-label">Projected Total Cost</span>
+                <span class="calc-value">₹{{ premiumCalc.projectedTotalCost | number:'1.0-0' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action -->
+    <div class="action-bar" *ngIf="policy.status === 'active'">
+        <button class="pay-btn" (click)="payPremium()">
+            <span class="material-icons-outlined">payments</span>
+            Pay Premium — ₹{{ premiumCalc?.totalWithTax || policy.premiumAmount | number:'1.0-0' }}
+        </button>
+    </div>
+</div>
+
+<div class="not-found" *ngIf="!policy">
+    <span class="material-icons-outlined nf-icon">search_off</span>
+    <h2>Policy not found</h2>
+    <button class="back-btn" (click)="goBack()">
+        <span class="material-icons-outlined">arrow_back</span>
+        Back to Policies
+    </button>
+</div>

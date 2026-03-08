@@ -1,0 +1,219 @@
+@import '../shared/styles/variables';
+@import '../shared/styles/mixins';
+
+.home-page {
+    @include page-container;
+}
+
+// Stats Grid
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $space-md;
+    margin-bottom: $space-2xl;
+
+    @media (max-width: 900px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.stat-card {
+    @include card;
+    padding: $space-lg;
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+    animation: slideUp 0.3s ease both;
+
+    @for $i from 1 through 4 {
+        &:nth-child(#{$i}) {
+            animation-delay: #{$i * 0.05}s;
+        }
+    }
+}
+
+.stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: $radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: rgba($accent-primary, 0.06);
+
+    .material-icons-outlined {
+        font-size: 22px;
+        color: $accent-primary;
+    }
+
+    &.success {
+        background: $success-bg;
+
+        .material-icons-outlined {
+            color: $success;
+        }
+    }
+
+    &.accent {
+        background: rgba($accent-primary, 0.06);
+
+        .material-icons-outlined {
+            color: $accent-primary;
+        }
+    }
+
+    &.info {
+        background: $info-bg;
+
+        .material-icons-outlined {
+            color: $info;
+        }
+    }
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+}
+
+.stat-label {
+    font-size: $font-size-xs;
+    color: $text-muted;
+}
+
+// Section
+.section {
+    margin-bottom: $space-2xl;
+}
+
+.section-title {
+    @include section-title;
+}
+
+// Actions Grid
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-md;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.action-card {
+    @include card;
+    padding: $space-lg;
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+    cursor: pointer;
+    text-decoration: none;
+    animation: slideUp 0.3s ease both;
+}
+
+.action-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-md;
+    background: rgba($accent-primary, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    .material-icons-outlined {
+        font-size: 20px;
+        color: $accent-primary;
+    }
+}
+
+.action-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.action-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+}
+
+.action-desc {
+    font-size: $font-size-xs;
+    color: $text-muted;
+}
+
+.action-arrow {
+    color: $text-muted;
+    font-size: 18px !important;
+    transition: transform $transition-base;
+
+    .action-card:hover & {
+        color: $accent-primary;
+        transform: translateX(3px);
+    }
+}
+
+// Payments Table
+.payments-table {
+    @include card;
+    overflow: hidden;
+
+    &:hover {
+        box-shadow: $shadow-sm;
+    }
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 12px $space-lg;
+    align-items: center;
+    font-size: $font-size-sm;
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &.table-header {
+        color: $text-muted;
+        font-weight: $font-weight-medium;
+        font-size: $font-size-xs;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        background: $bg-primary;
+    }
+}
+
+.cell-policy {
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+}
+
+.cell-amount {
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+}
+
+.cell-date {
+    color: $text-secondary;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: $radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    text-transform: capitalize;
+}

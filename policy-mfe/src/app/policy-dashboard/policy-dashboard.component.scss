@@ -1,0 +1,194 @@
+@import '../shared/styles/variables';
+@import '../shared/styles/mixins';
+
+.policy-dashboard {
+    @include page-container;
+}
+
+.page-header {
+    margin-bottom: $space-xl;
+}
+
+.page-title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: 4px;
+}
+
+.page-subtitle {
+    font-size: $font-size-sm;
+    color: $text-muted;
+}
+
+// Filter Bar
+.filter-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: $space-xl;
+    padding: 4px;
+    background: $bg-secondary;
+    border-radius: $radius-md;
+    border: 1px solid $border-color;
+    width: fit-content;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    padding: 6px 14px;
+    background: transparent;
+    color: $text-secondary;
+    border: none;
+    border-radius: $radius-sm;
+    font-family: $font-family;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        color: $text-primary;
+        background: $bg-primary;
+    }
+
+    &.active {
+        color: $text-white;
+        background: $accent-primary;
+    }
+}
+
+.filter-count {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0 5px;
+    border-radius: $radius-full;
+    font-size: 11px;
+}
+
+// Policy Grid
+.policy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: $space-md;
+}
+
+.policy-card {
+    @include card;
+    padding: $space-lg;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+    animation: slideUp 0.3s ease both;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.policy-type-badge {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+}
+
+.type-icon {
+    font-size: 20px !important;
+    color: $accent-primary;
+}
+
+.type-label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: $radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    text-transform: capitalize;
+}
+
+.card-body {
+    .policy-number {
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $text-primary;
+        margin-bottom: 4px;
+    }
+
+    .policy-desc {
+        font-size: $font-size-sm;
+        color: $text-muted;
+        line-height: 1.5;
+    }
+}
+
+.card-stats {
+    display: flex;
+    gap: $space-xl;
+    padding: $space-md 0;
+    border-top: 1px solid $border-color;
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .stat-label {
+        font-size: $font-size-xs;
+        color: $text-muted;
+    }
+
+    .stat-value {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-semibold;
+        color: $text-primary;
+    }
+}
+
+.card-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.view-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: $font-size-sm;
+    color: $accent-primary;
+    font-weight: $font-weight-medium;
+    transition: color $transition-fast;
+
+    .material-icons-outlined {
+        font-size: 16px !important;
+        transition: transform $transition-fast;
+    }
+
+    .policy-card:hover & .material-icons-outlined {
+        transform: translateX(2px);
+    }
+}
+
+// Empty State
+.empty-state {
+    text-align: center;
+    padding: $space-2xl;
+    color: $text-muted;
+
+    .empty-icon {
+        font-size: 48px !important;
+        color: $border-color;
+        margin-bottom: $space-md;
+    }
+}

@@ -1,0 +1,12 @@
+.DS_Store
+.angular/
+.vercel/
+coverage/
+
+*/node_modules/
+*/dist/
+*/.angular/
+*/coverage/
+
+npm-debug.log*
+yarn-error.log*
